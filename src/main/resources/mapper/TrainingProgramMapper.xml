@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="schooloa.dao.TrainingProgramMapper">
+  <resultMap id="BaseResultMap" type="schooloa.bean.TrainingProgram">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="professional" jdbcType="VARCHAR" property="professional" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="courseno" jdbcType="VARCHAR" property="courseno" />
+    <result column="coursename" jdbcType="VARCHAR" property="coursename" />
+    <result column="credit" jdbcType="DOUBLE" property="credit" />
+    <result column="totalhour" jdbcType="DOUBLE" property="totalhour" />
+    <result column="theoryhour" jdbcType="DOUBLE" property="theoryhour" />
+    <result column="experimenthour" jdbcType="DOUBLE" property="experimenthour" />
+    <result column="computerhour" jdbcType="DOUBLE" property="computerhour" />
+    <result column="testform" jdbcType="VARCHAR" property="testform" />
+    <result column="coursetype" jdbcType="VARCHAR" property="coursetype" />
+    <result column="beginsemester" jdbcType="VARCHAR" property="beginsemester" />
+    <result column="syllabuspath" jdbcType="VARCHAR" property="syllabuspath" />
+    <result column="teachingplanpath" jdbcType="VARCHAR" property="teachingplanpath" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, professional, grade, courseno, coursename, credit, totalhour, theoryhour, experimenthour, 
+    computerhour, testform, coursetype, beginsemester, syllabuspath, teachingplanpath, 
+    createtime
+  </sql>
+  <sql id="Base_Column_List2">
+    id, professional, grade, courseno, coursename, credit, totalhour, theoryhour, experimenthour, 
+    computerhour, testform, coursetype, beginsemester
+  </sql>
+  <select id="selectByExample" parameterType="schooloa.bean.TrainingProgramExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trainingprogram
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <!-- 查询 -->
+  <select id="selectALL"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List2" />
+    from trainingprogram
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trainingprogram
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询导出为excel文件的数据 -->
+  <select id="selectByexcel" resultMap="BaseResultMap">
+  	select professional,grade,courseno,coursename,credit,totalhour,theoryhour,experimenthour,
+  	computerhour,testform,coursetype,beginsemester from trainingprogram
+  </select>
+  
+  <!-- 返回excel查询的条数 -->
+  <select id="selectReturnCount" resultType="java.lang.Integer">
+  select count(*) from trainingprogram
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trainingprogram
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="schooloa.bean.TrainingProgramExample">
+    delete from trainingprogram
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <!-- 将下面的id去掉 -->
+  <insert id="insert" parameterType="schooloa.bean.TrainingProgram">
+    insert into trainingprogram (professional, grade, 
+      courseno, coursename, credit, 
+      totalhour, theoryhour, experimenthour, 
+      computerhour, testform, coursetype, 
+      beginsemester, syllabuspath, teachingplanpath, 
+      createtime)
+    values (#{professional,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
+      #{courseno,jdbcType=VARCHAR}, #{coursename,jdbcType=VARCHAR}, #{credit,jdbcType=DOUBLE}, 
+      #{totalhour,jdbcType=DOUBLE}, #{theoryhour,jdbcType=DOUBLE}, #{experimenthour,jdbcType=DOUBLE}, 
+      #{computerhour,jdbcType=DOUBLE}, #{testform,jdbcType=VARCHAR}, #{coursetype,jdbcType=VARCHAR}, 
+      #{beginsemester,jdbcType=VARCHAR}, #{syllabuspath,jdbcType=VARCHAR}, #{teachingplanpath,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  
+   <!-- 插入list集合，不再是一个一个的插入 -->
+  <insert id="batchInsert" parameterType="java.util.List" >
+    insert into trainingprogram(professional, grade,courseno, coursename, credit, totalhour,theoryhour,experimenthour,computerhour, testform, coursetype, beginsemester) values 
+    <foreach collection="list" item = "t" index="index" separator=",">
+    
+     (#{t.professional,jdbcType=VARCHAR}, #{t.grade,jdbcType=VARCHAR}, 
+      #{t.courseno,jdbcType=VARCHAR}, #{t.coursename,jdbcType=VARCHAR}, #{t.credit,jdbcType=DOUBLE}, 
+      #{t.totalhour,jdbcType=DOUBLE}, #{t.theoryhour,jdbcType=DOUBLE}, #{t.experimenthour,jdbcType=DOUBLE}, 
+      #{t.computerhour,jdbcType=DOUBLE}, #{t.testform,jdbcType=VARCHAR}, #{t.coursetype,jdbcType=VARCHAR}, 
+      #{t.beginsemester,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+  <insert id="insertBybatch" parameterType="schooloa.bean.TrainingProgram">
+    insert into trainingprogram
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="professional != null">
+        professional,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="courseno != null">
+        courseno,
+      </if>
+      <if test="coursename != null">
+        coursename,
+      </if>
+      <if test="credit != null">
+        credit,
+      </if>
+      <if test="totalhour != null">
+        totalhour,
+      </if>
+      <if test="theoryhour != null">
+        theoryhour,
+      </if>
+      <if test="experimenthour != null">
+        experimenthour,
+      </if>
+      <if test="computerhour != null">
+        computerhour,
+      </if>
+      <if test="testform != null">
+        testform,
+      </if>
+      <if test="coursetype != null">
+        coursetype,
+      </if>
+      <if test="beginsemester != null">
+        beginsemester,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="professional != null">
+        #{professional,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="courseno != null">
+        #{courseno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursename != null">
+        #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalhour != null">
+        #{totalhour,jdbcType=DOUBLE},
+      </if>
+      <if test="theoryhour != null">
+        #{theoryhour,jdbcType=DOUBLE},
+      </if>
+      <if test="experimenthour != null">
+        #{experimenthour,jdbcType=DOUBLE},
+      </if>
+      <if test="computerhour != null">
+        #{computerhour,jdbcType=DOUBLE},
+      </if>
+      <if test="testform != null">
+        #{testform,jdbcType=VARCHAR},
+      </if>
+      <if test="coursetype != null">
+        #{coursetype,jdbcType=VARCHAR},
+      </if>
+      <if test="beginsemester != null">
+        #{beginsemester,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="schooloa.bean.TrainingProgram">
+    insert into trainingprogram
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="professional != null">
+        professional,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="courseno != null">
+        courseno,
+      </if>
+      <if test="coursename != null">
+        coursename,
+      </if>
+      <if test="credit != null">
+        credit,
+      </if>
+      <if test="totalhour != null">
+        totalhour,
+      </if>
+      <if test="theoryhour != null">
+        theoryhour,
+      </if>
+      <if test="experimenthour != null">
+        experimenthour,
+      </if>
+      <if test="computerhour != null">
+        computerhour,
+      </if>
+      <if test="testform != null">
+        testform,
+      </if>
+      <if test="coursetype != null">
+        coursetype,
+      </if>
+      <if test="beginsemester != null">
+        beginsemester,
+      </if>
+      <if test="syllabuspath != null">
+        syllabuspath,
+      </if>
+      <if test="teachingplanpath != null">
+        teachingplanpath,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="professional != null">
+        #{professional,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="courseno != null">
+        #{courseno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursename != null">
+        #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalhour != null">
+        #{totalhour,jdbcType=DOUBLE},
+      </if>
+      <if test="theoryhour != null">
+        #{theoryhour,jdbcType=DOUBLE},
+      </if>
+      <if test="experimenthour != null">
+        #{experimenthour,jdbcType=DOUBLE},
+      </if>
+      <if test="computerhour != null">
+        #{computerhour,jdbcType=DOUBLE},
+      </if>
+      <if test="testform != null">
+        #{testform,jdbcType=VARCHAR},
+      </if>
+      <if test="coursetype != null">
+        #{coursetype,jdbcType=VARCHAR},
+      </if>
+      <if test="beginsemester != null">
+        #{beginsemester,jdbcType=VARCHAR},
+      </if>
+      <if test="syllabuspath != null">
+        #{syllabuspath,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingplanpath != null">
+        #{teachingplanpath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="schooloa.bean.TrainingProgramExample" resultType="java.lang.Long">
+    select count(*) from trainingprogram
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update trainingprogram
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.professional != null">
+        professional = #{record.professional,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null">
+        grade = #{record.grade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.courseno != null">
+        courseno = #{record.courseno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coursename != null">
+        coursename = #{record.coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.credit != null">
+        credit = #{record.credit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalhour != null">
+        totalhour = #{record.totalhour,jdbcType=DOUBLE},
+      </if>
+      <if test="record.theoryhour != null">
+        theoryhour = #{record.theoryhour,jdbcType=DOUBLE},
+      </if>
+      <if test="record.experimenthour != null">
+        experimenthour = #{record.experimenthour,jdbcType=DOUBLE},
+      </if>
+      <if test="record.computerhour != null">
+        computerhour = #{record.computerhour,jdbcType=DOUBLE},
+      </if>
+      <if test="record.testform != null">
+        testform = #{record.testform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coursetype != null">
+        coursetype = #{record.coursetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginsemester != null">
+        beginsemester = #{record.beginsemester,jdbcType=VARCHAR},
+      </if>
+      <if test="record.syllabuspath != null">
+        syllabuspath = #{record.syllabuspath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachingplanpath != null">
+        teachingplanpath = #{record.teachingplanpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update trainingprogram
+    set id = #{record.id,jdbcType=INTEGER},
+      professional = #{record.professional,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=VARCHAR},
+      courseno = #{record.courseno,jdbcType=VARCHAR},
+      coursename = #{record.coursename,jdbcType=VARCHAR},
+      credit = #{record.credit,jdbcType=DOUBLE},
+      totalhour = #{record.totalhour,jdbcType=DOUBLE},
+      theoryhour = #{record.theoryhour,jdbcType=DOUBLE},
+      experimenthour = #{record.experimenthour,jdbcType=DOUBLE},
+      computerhour = #{record.computerhour,jdbcType=DOUBLE},
+      testform = #{record.testform,jdbcType=VARCHAR},
+      coursetype = #{record.coursetype,jdbcType=VARCHAR},
+      beginsemester = #{record.beginsemester,jdbcType=VARCHAR},
+      syllabuspath = #{record.syllabuspath,jdbcType=VARCHAR},
+      teachingplanpath = #{record.teachingplanpath,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="schooloa.bean.TrainingProgram">
+    update trainingprogram
+    <set>
+      <if test="professional != null">
+        professional = #{professional,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="courseno != null">
+        courseno = #{courseno,jdbcType=VARCHAR},
+      </if>
+      <if test="coursename != null">
+        coursename = #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null">
+        credit = #{credit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalhour != null">
+        totalhour = #{totalhour,jdbcType=DOUBLE},
+      </if>
+      <if test="theoryhour != null">
+        theoryhour = #{theoryhour,jdbcType=DOUBLE},
+      </if>
+      <if test="experimenthour != null">
+        experimenthour = #{experimenthour,jdbcType=DOUBLE},
+      </if>
+      <if test="computerhour != null">
+        computerhour = #{computerhour,jdbcType=DOUBLE},
+      </if>
+      <if test="testform != null">
+        testform = #{testform,jdbcType=VARCHAR},
+      </if>
+      <if test="coursetype != null">
+        coursetype = #{coursetype,jdbcType=VARCHAR},
+      </if>
+      <if test="beginsemester != null">
+        beginsemester = #{beginsemester,jdbcType=VARCHAR},
+      </if>
+      <if test="syllabuspath != null">
+        syllabuspath = #{syllabuspath,jdbcType=VARCHAR},
+      </if>
+      <if test="teachingplanpath != null">
+        teachingplanpath = #{teachingplanpath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="schooloa.bean.TrainingProgram">
+    update trainingprogram
+    set professional = #{professional,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      courseno = #{courseno,jdbcType=VARCHAR},
+      coursename = #{coursename,jdbcType=VARCHAR},
+      credit = #{credit,jdbcType=DOUBLE},
+      totalhour = #{totalhour,jdbcType=DOUBLE},
+      theoryhour = #{theoryhour,jdbcType=DOUBLE},
+      experimenthour = #{experimenthour,jdbcType=DOUBLE},
+      computerhour = #{computerhour,jdbcType=DOUBLE},
+      testform = #{testform,jdbcType=VARCHAR},
+      coursetype = #{coursetype,jdbcType=VARCHAR},
+      beginsemester = #{beginsemester,jdbcType=VARCHAR},
+      syllabuspath = #{syllabuspath,jdbcType=VARCHAR},
+      teachingplanpath = #{teachingplanpath,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 开始 -->
+  
+  <select id="selecttrain" resultMap="BaseResultMap">
+  select * from trainingprogram where 1=1
+	  <if test="professional!=null &amp;&amp; professional!=&quot;&quot;">
+	  and professional=#{professional}
+	  </if>
+	  <if test="grade!=null &amp;&amp; grade!=&quot;&quot;">
+	  and grade=#{grade}
+	  </if>
+	  <if test="courseno!=null &amp;&amp; courseno!=&quot;&quot;">
+	  and courseno=#{courseno}
+	  </if>
+	  <if test="coursename!=null &amp;&amp; coursename!=&quot;&quot;">
+	  and coursename=#{coursename}
+	  </if>
+	   limit #{page1,jdbcType=INTEGER},15
+  </select>
+  
+  
+  <select id="selecttraincount" resultType="integer">
+   select count(*) from trainingprogram where 1=1
+	   <if test="professional!=null &amp;&amp; professional!=&quot;&quot;">
+	  and professional=#{professional}
+	  </if>
+	  <if test="grade!=null &amp;&amp; grade!=&quot;&quot;">
+	  and grade=#{grade}
+	  </if>
+	  <if test="courseno!=null &amp;&amp; courseno!=&quot;&quot;">
+	  and courseno=#{courseno}
+	  </if>
+	  <if test="coursename!=null &amp;&amp; coursename!=&quot;&quot;">
+	  and coursename=#{coursename}
+	  </if>
+  </select>
+</mapper>
